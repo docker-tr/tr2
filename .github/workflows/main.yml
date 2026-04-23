@@ -3,30 +3,21 @@ name: Docker Python
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 */1 * * *"
+    - cron: "15 * * * *"   # 1x por hora
   push:
     branches: ["main"]
 
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 30   # coloque no nível do job (correto)
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # - name: Build Docker
-      #   run: docker build -t bro .
-
       - name: Run Docker
         env:
           TOKEN: ${{ secrets.TOKEN }}
-        timeout-minutes: 59
-        continue-on-error: true
-        run: docker run --rm traffmonetizer/cli_v2 start accept --token $TOKEN
-
-      - name: Upload screenshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshot
-          path: "*.png"
+        # run: docker run --rm traffmonetizer/cli_v2 start accept --token $TOKEN
+        run: docker run --rm -e P2P_EMAIL=$TOKEN techroy23/docker-peer2profit:latest
