@@ -25,7 +25,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
         run: |
-            docker run -d \
+            docker run \
             --name=traffmonetizer \
             --cpus=0.25 --pull=always --restart=always \
             --log-driver=json-file --log-opt max-size=1m --log-opt max-file=1 \
