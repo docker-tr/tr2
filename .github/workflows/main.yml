@@ -1,23 +1,28 @@
-# name: Docker Python
+name: Docker Python
 
-# on:
-#   workflow_dispatch:
-#   schedule:
-#     - cron: "15 * * * *"   # 1x por hora
-#   push:
-#     branches: ["main"]
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 * * * *"   # 1x por hora
+  push:
+    branches: ["main"]
 
-# jobs:
-#   run:
-#     runs-on: ubuntu-latest
-#     timeout-minutes: 30   # coloque no nível do job (correto)
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # max-parallel: 3
+      matrix:
+        id: [1,2,3,4,5]
+    timeout-minutes: 55   # coloque no nível do job (correto)
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Run Docker
-#         env:
-#           TOKEN: ${{ secrets.TOKEN }}
-#         # run: docker run --rm traffmonetizer/cli_v2 start accept --token $TOKEN
-#         run: docker run --rm -e P2P_EMAIL=$TOKEN techroy23/docker-peer2profit:latest
+      - name: Run Docker
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        # run: docker run --rm traffmonetizer/cli_v2 start accept --token $TOKEN
+        run: docker run --rm -e P2P_EMAIL=$TOKEN techroy23/docker-peer2profit:latest
